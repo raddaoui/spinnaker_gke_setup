@@ -1,10 +1,10 @@
 #/bin/bash
 set -x
 
-# source the variable files
-source vars.rc
-
 REPO_HOME="$( cd "$( dirname "${BASH_SOURCE[0]}" )/.." && pwd )"
+
+# source the variable files
+source ${REPO_HOME}/scripts/vars.rc
 
 # use project and region from your current setup
 export PROJECT=$(gcloud config get-value core/project)
@@ -30,10 +30,10 @@ export SA_JSON=$(cat /tmp/spinnaker-sa.json) && rm /tmp/spinnaker-sa.json
 # create a GCS bucket 
 export BUCKET=$PROJECT-spinnaker-config
 gsutil mb -c regional -l $REGION gs://$BUCKET
-
+export REGION=$(gcloud config get-value compute/region)
 # create a static public ip for spinnaker UI
-gcloud compute addresses create spinnaker-ip --region $REGION || echo "spinnaker ip already created"
-#gcloud compute addresses create spinnaker-api-ip --region $REGION || echo "spinnaker api ip already created"
+gcloud compute addresses create spinnaker-ui-ip --region $REGION || echo "spinnaker ui ip already created"
+gcloud compute addresses create spinnaker-api-ip --region $REGION || echo "spinnaker api ip already created"
 
 cat > "${REPO_HOME}/helm/spinnaker-config.yaml" <<EOF
 gcs:

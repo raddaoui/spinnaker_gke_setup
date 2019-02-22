@@ -18,7 +18,7 @@ helm delete --purge spin || 'echo helm chart deletion failed'
 kubectl delete ns spin && sleep 10
 
 # release spinnaker static ip
-#gcloud compute addresses delete spinnaker-ip --region $REGION --quiet
+#gcloud compute addresses delete spinnaker-ui-ip --region $REGION --quiet
 #gcloud compute addresses delete spinnaker-api-ip --region $REGION --quiet
 
 # remove policy binding spinnaker SA <--> Storage.admin

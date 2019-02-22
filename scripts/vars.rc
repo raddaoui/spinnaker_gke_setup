@@ -1,1 +1,3 @@
-spinnaker-domain=fakedomain.com
+# spinnaker url will follow spinnaker.[$spinnaker-domain]
+spinnaker-domain=ops.peek.com
+
