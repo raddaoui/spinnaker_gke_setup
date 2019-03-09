@@ -10,9 +10,9 @@ source ${REPO_HOME}/scripts/vars.rc
 export PROJECT=$(gcloud config get-value core/project)
 export REGION=$(gcloud config get-value compute/region)
 
-# Create a service account for spinnaker
+# Create a service account for spinnaker and wait for creation
 gcloud iam service-accounts create  spinnaker-account \
-    --display-name spinnaker-account
+    --display-name spinnaker-account && sleep 10
 
 # Store the service account email address and your current project ID in environment variable
 export SA_EMAIL=$(gcloud iam service-accounts list \
@@ -31,9 +31,6 @@ export SA_JSON=$(cat /tmp/spinnaker-sa.json) && rm /tmp/spinnaker-sa.json
 export BUCKET=$PROJECT-spinnaker-config
 gsutil mb -c regional -l $REGION gs://$BUCKET
 export REGION=$(gcloud config get-value compute/region)
-# create a static public ip for spinnaker UI
-gcloud compute addresses create spinnaker-ui-ip --region $REGION || echo "spinnaker ui ip already created"
-gcloud compute addresses create spinnaker-api-ip --region $REGION || echo "spinnaker api ip already created"
 
 cat > "${REPO_HOME}/helm/spinnaker-config.yaml" <<EOF
 gcs:
@@ -67,11 +64,16 @@ halyard:
         \$HAL_COMMAND config artifact gcs enable
 
 # Change this if youd like to expose Spinnaker outside the cluster
-#ingress:
-#  enabled: true
-#  host: spinnaker.$spinnaker-domain
-#  annotations:
-#    kubernetes.io/ingress.global-static-ip-name: 'spinnaker-ip'
+ingress:
+  enabled: true
+  host: spinnaker.$spinnaker_domain
+  annotations:
+    kubernetes.io/ingress.class: 'nginx'
+ingressGate:
+  enabled: true
+  host: spinnaker-api.$spinnaker_domain
+  annotations:
+    kubernetes.io/ingress.class: 'nginx'
 EOF
 
 # Create a namespace for spinnaker

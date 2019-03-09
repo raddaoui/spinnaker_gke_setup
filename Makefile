@@ -8,7 +8,6 @@ ROOT:=.
 
 DEBUG?=-c dbg
 
-# enable services
 .PHONY: bootstrap
 bootstrap:
 	gcloud services enable \
@@ -22,10 +21,18 @@ bootstrap:
 helm:
 	$(ROOT)/scripts/install_helm.sh
 
+.PHONY: nginx_controller
+nginx_controller:
+	$(ROOT)/scripts/install_nginx_controller.sh
+
+.PHONY: remove_nginx_controller
+remove_nginx_controller:
+	$(ROOT)/scripts/remove_nginx_controller.sh
+
 .PHONY: create
 create:
 	pushd $(ROOT)/scripts && ./install_spinnaker.sh && popd
 
 .PHONY: teardown
 teardown:
-	pushd $(ROOT)/scripts && ./clean.sh && popd
+	pushd $(ROOT)/scripts && ./teardown.sh && popd
