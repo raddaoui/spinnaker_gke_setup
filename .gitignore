@@ -1,4 +1,3 @@
 helm/*
 !helm/.gitkeep 
-kube_manifests/*
-!kube_manifests/.gitkeep
+kube_manifests/nginx_controller_service.yaml

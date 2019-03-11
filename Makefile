@@ -29,10 +29,18 @@ nginx_controller:
 remove_nginx_controller:
 	$(ROOT)/scripts/remove_nginx_controller.sh
 
-.PHONY: create
-create:
+.PHONY: cert_manager
+cert_manager:
+	$(ROOT)/scripts/install_cert_manager.sh
+
+.PHONY: remove_cert_manager
+remove_cert_manager:
+	$(ROOT)/scripts/remove_cert_manager.sh
+
+.PHONY: spinnaker
+spinnaker:
 	pushd $(ROOT)/scripts && ./install_spinnaker.sh && popd
 
-.PHONY: teardown
-teardown:
-	pushd $(ROOT)/scripts && ./teardown.sh && popd
+.PHONY: remove_spinnaker
+remove_spinnaker:
+	pushd $(ROOT)/scripts && ./remove_spinnaker.sh && popd

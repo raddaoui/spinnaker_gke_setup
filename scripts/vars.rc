@@ -1,4 +1,5 @@
 # spinnaker url will follow spinnaker.[$spinnaker-domain]
 spinnaker_domain=mydomain.com
+spinnaker_domain_email=user@mydomain.com
 internal_endpoint=False # whether spinnaker ingress should be external or internal. valid values True of False
 ingress_subnet=ops-cluster-subnet # need to be defined when internal endpoint is set to True

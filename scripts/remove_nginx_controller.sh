@@ -9,6 +9,7 @@ kubectl delete -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/mas
 kubectl delete -f "${REPO_HOME}/kube_manifests/nginx_controller_service.yaml"
 kubectl delete ns ingress-nginx --ignore-not-found
 rm -f "${REPO_HOME}/kube_manifests/nginx_controller_service.yaml"
+kubectl delete ns ingress-nginx
 
 if [ $internal_endpoint == True ]; then
   echo "removing nginx-ingress-internal-ip"

@@ -13,7 +13,7 @@ export REGION=$(gcloud config get-value compute/region)
 
 # source: https://kubernetes.github.io/ingress-nginx/deploy/#gce-gke
 kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/mandatory.yaml
-kubectl create ns ingress-nginx || echo 'ingress-nginx ns exists'
+kubectl create ns ingress-nginx && sleep 2 || echo 'ingress-nginx ns exists'
 
 # to make the nginx ingress controller use a private or a static ip, you can add a couple of annotations
 # for more information on using internal and static service with gke:

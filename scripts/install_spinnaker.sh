@@ -68,12 +68,26 @@ ingress:
   enabled: true
   host: spinnaker.$spinnaker_domain
   annotations:
-    kubernetes.io/ingress.class: 'nginx'
+    ingress.kubernetes.io/ssl-redirect: 'true'
+    kubernetes.io/ingress.class: nginx
+    kubernetes.io/tls-acme: 'true'
+    certmanager.k8s.io/cluster-issuer: letsencrypt-prod
+  tls:
+  - secretName: spinnaker-tls-prod-cert
+    hosts:
+    - 'spinnaker.$spinnaker_domain'
 ingressGate:
   enabled: true
   host: spinnaker-api.$spinnaker_domain
   annotations:
-    kubernetes.io/ingress.class: 'nginx'
+    ingress.kubernetes.io/ssl-redirect: 'true'
+    kubernetes.io/ingress.class: nginx
+    kubernetes.io/tls-acme: 'true'
+    certmanager.k8s.io/cluster-issuer: letsencrypt-prod
+  tls:
+  - secretName: spinnaker-api-tls-prod-cert
+    hosts:
+    - 'spinnaker-api.$spinnaker_domain'
 EOF
 
 # Create a namespace for spinnaker

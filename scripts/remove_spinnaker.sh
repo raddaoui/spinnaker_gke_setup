@@ -22,7 +22,7 @@ gcloud projects remove-iam-policy-binding \
     $PROJECT --role roles/storage.admin --member serviceAccount:$SA_EMAIL --quiet
 
 # delete Spinnaker SA
-gcloud iam service-accounts delete ${SA_EMAIL} || echo 'service account: ${SA_EMAIL} not found'
+gcloud iam service-accounts delete ${SA_EMAIL} --quiet || echo 'service account: ${SA_EMAIL} not found'
 
 # remove spinnaker helm config
 rm -f "${REPO_HOME}/helm/spinnaker-config.yaml"
