@@ -1,0 +1,87 @@
+{
+ "name": "Deploy to Staging",
+ "application": "APPLICATION",
+ "id": "8a7c4f0b-7135-49a1-80c7-b5f3355295da",
+ "keepWaitingPipelines": false,
+ "lastModifiedBy": "anonymous",
+ "limitConcurrent": true,
+ "disabled": false,
+ "expectedArtifacts": [
+  {
+   "defaultArtifact": {
+    "customKind": true,
+    "id": "3eedec9e-0762-44c9-ab7d-246c6073f3ce"
+   },
+   "id": "05ca84f8-ab03-496d-bef0-ef2fcd5d001e",
+   "matchArtifact": {
+    "id": "8b6d5a32-b2d7-4143-9ca6-ccee74b1cc62",
+    "name": "FOLDER_PATH/.*\\\\.yaml",
+    "type": "github/file"
+   },
+   "useDefaultArtifact": false,
+   "usePriorArtifact": true
+  },
+  {
+   "defaultArtifact": {
+    "customKind": true,
+    "id": "cf5a8b38-7e86-4d8f-9e08-fc6f1ef07420"
+   },
+   "id": "195bb102-b92d-4f72-97e8-5b214a0bea49",
+   "matchArtifact": {
+    "id": "3752010e-b709-4369-be8a-ad4bd3ac7cfa",
+    "name": "DOCKER_IMAGE",
+    "type": "docker/image"
+   },
+   "useDefaultArtifact": false,
+   "usePriorArtifact": true
+  }
+ ],
+ "index": 0,
+ "stages": [
+  {
+   "account": "ACCOUNT",
+   "cloudProvider": "kubernetes",
+   "manifestArtifactAccount": "MANIFEST_ARTIFACT_ACCOUNT",
+   "manifestArtifactId": "05ca84f8-ab03-496d-bef0-ef2fcd5d001e",
+   "moniker": {
+    "app": "abacus"
+   },
+   "name": "Deploy (Manifest)",
+   "refId": "1",
+   "relationships": {
+    "loadBalancers": [],
+    "securityGroups": []
+   },
+   "requiredArtifactIds": [
+    "195bb102-b92d-4f72-97e8-5b214a0bea49"
+   ],
+   "requisiteStageRefIds": [],
+   "source": "artifact",
+   "type": "deployManifest"
+  }
+ ],
+ "triggers": [
+  {
+   "branch": "master",
+   "enabled": true,
+   "expectedArtifactIds": [
+    "05ca84f8-ab03-496d-bef0-ef2fcd5d001e"
+   ],
+   "project": "GITHUB_PROJECT",
+   "secret": "GITHUB_WEBHOOK_SECRET",
+   "slug": "GITHUB_REPO",
+   "source": "github",
+   "type": "git"
+  },
+  {
+   "enabled": true,
+   "expectedArtifactIds": [
+    "195bb102-b92d-4f72-97e8-5b214a0bea49"
+   ],
+   "payloadConstraints": {},
+   "source": "dockerhub",
+   "type": "webhook"
+  }
+ ],
+ "updateTs": "1553672223192"
+}
