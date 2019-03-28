@@ -1,5 +1,7 @@
 #/bin/bash
+
 set -x
+set -e
 
 REPO_HOME="$( cd "$( dirname "${BASH_SOURCE[0]}" )/.." && pwd )"
 
