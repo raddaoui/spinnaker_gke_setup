@@ -19,7 +19,7 @@ install_helm() {
                --serviceaccount=kube-system:tiller || echo 'clusterrolebinding already exists'
 
   helm init --service-account=tiller
-  helm repo update && sleep 10
+  helm repo update && sleep 20
   helm version
 }
 

@@ -1,0 +1,5 @@
+{
+ "cloudProviders": "kubernetes",
+ "email": "APPLICATION_OWNER_EMAIL",
+ "name": "APPLICATION"
+}

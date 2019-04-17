@@ -108,6 +108,8 @@ A screen will pop up with your new `Client ID` and `client secret`
 
 Now go back to the terminal where you're logged in to the halyard container and run the following
 
+	CLIENT_ID=[put client ID here]
+	CLIENT_SECRET=[put client secret]
         hal config security authn oauth2 edit --provider google \
          --client-id $CLIENT_ID \
          --client-secret $CLIENT_SECRET \

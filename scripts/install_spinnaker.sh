@@ -1,5 +1,7 @@
 #/bin/bash
+
 set -x
+set -e
 
 REPO_HOME="$( cd "$( dirname "${BASH_SOURCE[0]}" )/.." && pwd )"
 
@@ -54,8 +56,9 @@ minio:
 
 # Configure Spinnaker to enable GCP services
 halyard:
+  spinnakerVersion: $spinnaker_version
   image:
-    tag: 1.15.0
+    tag: $halyard_image_tag
   additionalScripts:
     create: true
     data:
@@ -93,4 +96,5 @@ EOF
 # Create a namespace for spinnaker
 kubectl create ns spin && sleep 2
 # Install Spinnaker
-helm install -n spin stable/spinnaker --namespace spin -f "${REPO_HOME}/helm/spinnaker-config.yaml" --version 1.7.2 --timeout 600 --wait
+helm repo update
+helm install -n spin stable/spinnaker --namespace spin -f "${REPO_HOME}/helm/spinnaker-config.yaml" --version "$spinnaker_helmchart_version" --timeout 600 --wait

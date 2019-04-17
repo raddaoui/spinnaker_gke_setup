@@ -2,6 +2,7 @@
 # source: https://docs.cert-manager.io/en/latest/getting-started/install.html
 
 set -x
+set -e
 
 REPO_HOME="$( cd "$( dirname "${BASH_SOURCE[0]}" )/.." && pwd )"
 
@@ -32,5 +33,5 @@ helm install \
 sleep 5 && kubectl get pods --namespace cert-manager
 
 # create lets Encrypt cluster Issuer for the cluster
-sed -i '' "s/email:.*/email: $spinnaker_domain_email/g" "${REPO_HOME}/kube_manifests/letsEncrypt-cluster-issuer.yaml"
+sed -i "s/email:.*/email: $spinnaker_domain_email/g" "${REPO_HOME}/kube_manifests/letsEncrypt-cluster-issuer.yaml"
 kubectl apply -f "${REPO_HOME}/kube_manifests/letsEncrypt-cluster-issuer.yaml"
