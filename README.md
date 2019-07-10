@@ -66,9 +66,9 @@ in the next part we will cover steps to expose Spinnaker with a public ip and al
 
 This step is not included in the automation since, this depends on where you're hosting your domain
 
-first get the spinnaker UI IP with this command
+first get the IP where spinnaker will get exposed
 
-        kubectl get ingress spin-spinnaker-deck -n spin -o jsonpath='{.status.loadBalancer.ingress[0].ip}'
+        kubectl get svc nginx-ingress-controller  -n nginx-ingress -o jsonpath='{.status.loadBalancer.ingress[0].ip}'
 
 
 Now move to your resitrar and create two A records with the ip you just got as shown below:
@@ -110,12 +110,12 @@ Now go back to the terminal where you're logged in to the halyard container and 
 
 	CLIENT_ID=[put client ID here]
 	CLIENT_SECRET=[put client secret]
-        hal config security authn oauth2 edit --provider google \
-         --client-id $CLIENT_ID \
-         --client-secret $CLIENT_SECRET \
-         --user-info-requirements hd=${spinnaker_domain#*.}
-
-         hal config security authn oauth2 enable
+	hal config security authn oauth2 edit --provider google \
+	  --client-id $CLIENT_ID \
+	  --client-secret $CLIENT_SECRET \
+	  --pre-established-redirect-uri=https://spinnaker-api.$spinnaker_domain/login \
+	  --user-info-requirements hd=${spinnaker_domain#*.}
+	hal config security authn oauth2 enable
 
 NOTE: any user which satisfy `user-info-requirements` is authorized to access the UI. Here, authorization is restrited to authenticated users with emails belonging to the root domain of Spinnaker.
 
@@ -126,8 +126,10 @@ Apply the configuration
 
 test your authentication is working by visiting the spinnaker UI https://spinnaker.$spinnaker_domain/
 
+### Continue with this [doc](docs/spinnaker_cd_steps.md) to learn how you can create CD pipelines for your application.
 
 Cleanup:
+---------
 
         make remove_spinnaker
         make remove_cert_manager

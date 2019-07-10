@@ -1,7 +1,8 @@
 spinnaker_domain=mydomain.com    # spinnaker url will follow https://spinnaker.[$spinnaker-domain]
 spinnaker_domain_email=user@mydomain.com    # needed to setup cert-manager and issue domain certificates for the specified domain
-halyard_image_tag=1.18.0     # for a list of valid versions see here: gcr.io/spinnaker-marketplace/halyard
-spinnaker_version=1.13.0     # for list of valid versions see here: https://www.spinnaker.io/community/releases/versions/
-spinnaker_helmchart_version=1.8.0     # for a list of valid helm chart versions, apply this command "helm search -l stable/spinnaker"
+halyard_image_tag=1.21.2     # for a list of valid versions see here: gcr.io/spinnaker-marketplace/halyard
+spinnaker_version=1.14.9     # for list of valid versions see here: https://www.spinnaker.io/community/releases/versions/
+spinnaker_helmchart_version=1.13.2     # for a list of valid helm chart versions, apply this command "helm search -l stable/spinnaker"
+nginx_namespace=nginx-ingress #which namespace to use to install nginx controller
 internal_endpoint=False     # whether spinnaker ingress should be external or internal. valid values True of False
-ingress_subnet=ops-cluster-subnet     # need to be defined when internal endpoint is set to True
+ingress_subnet=cicd-cluster-subnet     # need to be defined when internal endpoint is set to True
