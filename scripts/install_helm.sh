@@ -6,7 +6,7 @@ set -o pipefail
 
 
 # check if helm is installed in your machine
-command -v helm >/dev/null 2>&1 || { echo >&2 "I require helm but it's not installed. Please install it."; exit 1; }
+command -v helm >/dev/null 2>&1 || curl -L https://git.io/get_helm.sh | bash
 
 install_helm() {
   # assign yourself an admin role
