@@ -134,18 +134,22 @@ Now, we are ready to add the kubernetes account for the staging cluster and depl
 
 ## Step4: setup the spin client
 
-to enable authentication with Spin client, first create a new GCP oauth client in your GCP project [here](https://console.cloud.google.com/apis/credentials).
+to enable authentication with Spin client using oauth2 with Google, you can do it either by specifying a Client ID and a client secret which you can get by creating a new GCP oauth client in your GCP project [here](https://console.cloud.google.com/apis/credentials) or by specifying an Access and Refresh token.
 
-Set the name to `Spin Cli` and set Authorized redirect URL to: `http://localhost:8085`
+here we will be following the second option
 
-Note down the Client ID and Client secret generated for the new oauth client.
+First authenticate with Google via `gcloud auth login`.
 
+Use the following commands to acquire the tokens:
+
+```
+ACCESS_TOKEN=$(gcloud auth print-access-token)
+REFRESH_TOKEN=$(gcloud auth print-refresh-token)
+```
 Second, download the spin client binary by following direction from this [link](https://www.spinnaker.io/guides/spin/cli/)
 
 Finally, create a spin config file which will hold information on how to reach the gate and how to authenticate with GCP.
 
-    client_id=[put client id here]
-    client_secret=[put client secret here]
     spinnaker_domain=[put spinnaker domain here]
     cat << EOF > ~/.spin/config
     gate:
@@ -155,20 +159,18 @@ Finally, create a spin config file which will hold information on how to reach t
       oauth2:
         tokenUrl: https://www.googleapis.com/oauth2/v4/token
         authUrl: https://accounts.google.com/o/oauth2/auth
-        clientId: $client_id
-        clientSecret: $client_secret
         scopes:
         - email
         - profile
         - openid
+        cachedToken:
+          accesstoken: $ACCESS_TOKEN
+          refreshtoken: $REFRESH_TOKEN
     EOF
 
-now spin is installed and configured to talk to the spinnaker api. the spin client needs a token to authenticate calls to the api.
-to get the token, the first time you issue an api call using spin, you will prompted to navigate to a generated link by the spin client which will take to authentication page. once done, you will get a token. copy it and paste it back to spin.
+now spin is installed and configured to talk to the spinnaker api. execute the below command to make sure everyting is working.
 
     spin applications list
-
-Now your spin client is also authenticated and the token is cached in ~/.spin/config as well for future use.
 
 
 ## Step 5: create a spinnaker application 
@@ -211,8 +213,4 @@ Now let's create a copy of the template, configure it and save it to spinnaker
 Now its time to create the pipline in spinnaker and trigger it.
 
     spin pipeline save -f spinnaker_templates/deploy_manifests_pipeline.json
-
-log in to the spinnaker UI and find the pipeline created under the sampleapp application.
-
-Now trigger the pipeline by issuing a commit to one of the manifests in your github repo or push a new image to docker hub!
 
