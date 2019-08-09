@@ -1,0 +1,134 @@
+{
+ "application": "APPLICATION_NAME",
+ "expectedArtifacts": [
+  {
+   "defaultArtifact": {
+    "id": "017e60e3-3347-4869-85dd-73f361f9780a",
+    "name": "HELM_CHART_PATH",
+    "reference": "https://api.github.com/repos/GITHUB_PROJECT/GITHUB_REPO/contents/HELM_CHART_PATH",
+    "type": "github/file",
+    "version": "BRANCH"
+   },
+   "displayName": "APPLICATION_NAME-helm-package",
+   "id": "9b02bc1a-4e90-43a8-9ef3-a82b20a7bdbd",
+   "matchArtifact": {
+    "id": "266de733-8831-4f94-9bbe-b287b4ce604e",
+    "name": "HELM_CHART_PATH",
+    "type": "github/file"
+   },
+   "useDefaultArtifact": true,
+   "usePriorArtifact": false
+  },
+  {
+   "defaultArtifact": {
+    "id": "d460a8f2-4370-477d-990e-fffa3509129d",
+    "name": "HELM_CHART_VALUES_PATH",
+    "reference": "https://api.github.com/repos/GITHUB_PROJECT/GITHUB_REPO/contents/HELM_CHART_VALUES_PATH",
+    "type": "github/file",
+    "version": "BRANCH"
+   },
+   "displayName": "APPLICATION_NAME-helm-values",
+   "id": "63a810e2-aa52-445c-aa6e-995081cad46b",
+   "matchArtifact": {
+    "id": "aec60728-bb54-435d-a3b7-64e901dcecdc",
+    "name": "HELM_CHART_VALUES_PATH",
+    "type": "github/file"
+   },
+   "useDefaultArtifact": true,
+   "usePriorArtifact": false
+  },
+  {
+   "defaultArtifact": {
+    "id": "a1f4deee-54ee-4315-a560-d0b0293deaf1",
+    "name": "HELM_CHART_SHARED_VALUES_PATH",
+    "reference": "https://api.github.com/repos/GITHUB_PROJECT/GITHUB_REPO/contents/HELM_CHART_SHARED_VALUES_PATH",
+    "type": "github/file",
+    "version": "BRANCH"
+   },
+   "displayName": "shared-values",
+   "id": "d2ee3616-72ea-4052-a0b7-fa85fac2d2d4",
+   "matchArtifact": {
+    "id": "f9080e87-dde6-4cca-91d9-1e1dea8a1f4a",
+    "name": "HELM_CHART_SHARED_VALUES_PATH",
+    "type": "github/file"
+   },
+   "useDefaultArtifact": true,
+   "usePriorArtifact": false
+  }
+ ],
+ "id": "14a83d72-cbe6-4a0e-aceb-e7b770cc18c6",
+ "index": 0,
+ "keepWaitingPipelines": false,
+ "limitConcurrent": true,
+ "name": "PIPELINE_NAME",
+ "parameterConfig": [],
+ "stages": [
+  {
+   "evaluateOverrideExpressions": false,
+   "expectedArtifacts": [
+    {
+     "defaultArtifact": {},
+     "displayName": "APPLICATION_NAME-helm-artifact",
+     "id": "dd7859cc-da91-44b0-a3e7-2184b58c1980",
+     "matchArtifact": {
+      "kind": "base64",
+      "name": "APPLICATION_NAME",
+      "type": "embedded/base64"
+     },
+     "useDefaultArtifact": false
+    }
+   ],
+   "inputArtifacts": [
+    {
+     "account": "GITHUB_ARTIFACT_ACCOUNT_NAME",
+     "id": "9b02bc1a-4e90-43a8-9ef3-a82b20a7bdbd"
+    },
+    {
+     "account": "GITHUB_ARTIFACT_ACCOUNT_NAME",
+     "id": "63a810e2-aa52-445c-aa6e-995081cad46b"
+    },
+    {
+     "account": "GITHUB_ARTIFACT_ACCOUNT_NAME",
+     "id": "d2ee3616-72ea-4052-a0b7-fa85fac2d2d4"
+    }
+   ],
+   "name": "Bake (Manifest)",
+   "namespace": "NAMESPACE",
+   "outputName": "APPLICATION_NAME",
+   "overrides": {},
+   "refId": "1",
+   "requisiteStageRefIds": [],
+   "templateRenderer": "HELM2",
+   "type": "bakeManifest"
+  },
+  {
+   "account": "KUBERNETES_CLUSTER_ACCOUNT_NAME",
+   "cloudProvider": "kubernetes",
+   "manifestArtifactAccount": "embedded-artifact",
+   "manifestArtifactId": "dd7859cc-da91-44b0-a3e7-2184b58c1980",
+   "moniker": {
+    "app": "APPLICATION_NAME"
+   },
+   "name": "Deploy (Manifest)",
+   "refId": "2",
+   "relationships": {
+    "loadBalancers": [],
+    "securityGroups": []
+   },
+   "requisiteStageRefIds": [
+    "1"
+   ],
+   "skipExpressionEvaluation": true,
+   "source": "artifact",
+   "trafficManagement": {
+    "enabled": false,
+    "options": {
+     "enableTraffic": false,
+     "services": []
+    }
+   },
+   "type": "deployManifest"
+  }
+ ],
+ "updateTs": "1565171087383"
+}

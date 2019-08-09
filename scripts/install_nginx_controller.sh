@@ -20,8 +20,7 @@ if [ $internal_endpoint == True ]; then
   gcloud compute addresses create nginx-ingress-internal-ip --region $REGION --subnet $ingress_subnet || echo "ingress internal ip already created"
   # get ingress controller ip
   ingress_controller_ip=$(gcloud compute addresses describe nginx-ingress-internal-ip --region us-east4 --format 'value(address)')
-  # TODO: fix passing annotations to helm
-  helm install stable/nginx-ingress --name nginx-ingress --namespace nginx-ingress --set controller.service.loadBalancerIP=$ingress_controller_ip --set controller.service.annotations='cloud.google.com/load-balancer-type: "Internal"'
+  helm install stable/nginx-ingress --name nginx-ingress-internal --namespace "${nginx_namespace}" --set controller.service.loadBalancerIP=$ingress_controller_ip --set controller.service.annotations."cloud\.google\.com/load-balancer-type"=Internal
 elif [ $internal_endpoint == False ]; then
   # reserve a static external ip for the ingress controller
   gcloud compute addresses create nginx-ingress-external-ip --region $REGION || echo "ingress external ip already created"
